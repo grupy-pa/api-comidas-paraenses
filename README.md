@@ -7,6 +7,7 @@ Este repositório tem como objetivo propor um desafio para dojos de python com D
 ### O que será feito ?
 
 ROUND 1: Preparação do projeto
+
 No primeiro round será feita a preparação do projeto, os participantes terão que instalar o Django, iniciar um novo projeto e iniciar o servidor de testes a partir do manage.py
 
 ROUND 2: Django Rest Framework
