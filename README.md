@@ -6,6 +6,19 @@ Este repositório tem como objetivo propor um desafio para dojos de python com D
 
 ### O que será feito ?
 
+- **round 1: preparação do ambiente e criação do projeto**
+  - No primeiro round os participantes deverão criar o ambiente virtual ativá-lo e criar o projeto em Django.
+- **round 2: Django Rest Framework**
+  - No segundo round os participantes terão de instalar e configurar o DRF e validar a configuração.
+
+- **round 3: Modelagem do banco de dados**
+  - No terceiro round os participantes terão que modelar o banco de dados, gerar as migrações e aplicar as migrações no banco de dados.
+
+- **round 4: Criação de uma ViewSets sem modelo e configuração das rotas da API**
+  - No quarto round do dojo os participantes terão que construid uma ViewSets sem modelo e fazer a configuração das rotas com rest_framework.
+- **round 5: ViewSets e Serializers com modelo e testes com Thunder Client**
+  - No quarto round do dojo os participantes terão que construid uma ViewSets sem modelo e fazer a configuração das rotas com rest_framework.
+
 ##### ROUND 1: Preparação do ambiente e criação do projeto
 No primeiro round os participantes terão que criar o ambiente virtual para o projeto e o ambiente criado deverá ser ativado.
 
@@ -106,8 +119,6 @@ from rest_framework import routers
 O arquivo deve ficar assim:
 
 
-
-
 <center>
 
 ![Imagem do servidor local Django](images/primeiras_linhas_rest_framework.png)
@@ -131,7 +142,7 @@ Acessando a URL  http://localhost:8000 novamente deve aparecer a tela do Django,
 </center>
 
 
-ROUND 3: Modelagem do banco de dados
+##### ROUND 3: Modelagem do banco de dados
 
 No terceiro round os participantes irão modelar o banco de dados, criar o modelo ComidasParaenses, gerar as migrações e aplicar as migrações no banco.
 Vamos utilizar o banco de dados SQLite3 e acessar o projeto https://inloop.github.io/sqlite-viewer/ para visualizar a estrutura do banco de dados.
@@ -218,14 +229,52 @@ Running migrations:
   Applying comidas.0001_initial... OK
 ```
 
+Ótimo! o banco de dados foi criado!
 
-ROUND 4: Criação das ViewSets e Serializers sem modelo
+Podemos utilizar o aplicativo https://inloop.github.io/sqlite-viewer/ para visualizar a tabela.
+
+##### ROUND 4: Criação de uma ViewSets sem modelo
 
 No quarto round os participantes terão que construir a primeira viewsets que deve ser construída sem modelo para que as urls da API possam ser configuradas e testadas via browser.
 
+Acesse arquivo `comidas/views.py`
+
+Criação de uma ViewSets sem modelo
+
+```py
+from rest_framework.viewsets import ViewSet
+from rest_framework.response import Response
+from rest_framework import status
+
+class ViewSetSobre(ViewSet):
+
+    def list(self, request):
+        serializer = SobreSerializer()
+        return Response({ "message": "API funcionando!" }, status=status.HTTP_200_OK)
+```
+
+Configurando a url da api
+
+```py
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import routers
+
+from comidas.views import ViewSetSobre
+
+router = routers.DefaultRouter()
+
+router.register(r'sobre', ViewSetSobre, basename='sobre')
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/v1/receitas-paraenses/', include(router.urls)),
+]
+```
+
 A URL deve ser algo do tipo: `GET /api/v1/receitas-paraenses/sobre` e deve retornar o status de HTTP 200 OK
 
-ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
+##### ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
 
 Nesse round os participantes terão que construir o serializador de dados de modelos e também terão que codificar a ViewSets de modelo fornecendo ao DRF o poder de realizar o CRUD no banco de dados.
 Também terão que utilizar a extensão do visual code Thunder Client para testar o CRUD na API
