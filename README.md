@@ -488,3 +488,12 @@ from .models import Comida
 
 admin.site.register(Comida)
 ```
+
+### Eai, o que você achou?
+
+
+<center>
+
+![Imagem do servidor local Django](images/qr_pesquisa.png)
+
+</center>
