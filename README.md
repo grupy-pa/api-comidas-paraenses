@@ -6,6 +6,8 @@ Este repositório tem como objetivo propor um desafio para dojos de python com D
 
 ### O que será feito ?
 
+Desenvolver uma API Rest de comidas paraenses.
+
 - **round 1: preparação do ambiente e criação do projeto**
   - No primeiro round os participantes deverão criar o ambiente virtual ativá-lo e criar o projeto em Django.
 - **round 2: Django Rest Framework**
@@ -20,13 +22,18 @@ Este repositório tem como objetivo propor um desafio para dojos de python com D
   - No quarto round do dojo os participantes terão que construid uma ViewSets sem modelo e fazer a configuração das rotas com rest_framework.
 
 - **round 6: TDD**
-   - Nest round os participantes terão que codificar dois casos de testes simples para exemplificar a prática de TDD
+   - Neste round os participantes terão que codificar alguns casos de testes simples para exemplificar a prática de TDD
 
 - **round 7: Django Admin**
-   - No último round os participantes irão configurar a app comidas para ser manipulada pela interface gráfica do Django Admin
+   - No último round os participantes terão que configurar a interface visual do Django Admin para gerenciar as receitas, permitando assim um operação de CRUD na interface visual do Django Admin.
+
+Nos minutos finais da timebox será feita uma pequena retrospectiva do que foi desenvolvido e o que foi codificado será enviado para o repo do GruPy PA e ficará disponível para quem quiser e puder contribuir para melhorar!
+
+Você pode utilizar este guia para estudar e praticar por conta própria :)
 
 ##### ROUND 1: Preparação do ambiente e criação do projeto
-No primeiro round os participantes terão que criar o ambiente virtual para o projeto e o ambiente criado deverá ser ativado.
+
+Objetivo: Criação e ativação do ambiente virtual, instalação do Django, iniciar um novo projeto Django e iniciar o servidor de desenvolvimento.
 
 Criação do ambiente virtual
 
@@ -79,7 +86,7 @@ Agora é só acessar a URL http://localhost:8000/
 
 ##### ROUND 2: Django Rest Framework
 
-No segundo round os participantes terão que instalar o Django Rest Framework, configurar o DRF no projeto Django e testar sua configuração!
+Objetivo: Instalar o DRF e plugar a biblioteca no Django.
 
 instalação do DRF
 
@@ -150,8 +157,7 @@ Acessando a URL  http://localhost:8000 novamente deve aparecer a tela do Django,
 
 ##### ROUND 3: Modelagem do banco de dados
 
-No terceiro round os participantes irão modelar o banco de dados, criar o modelo ComidasParaenses, gerar as migrações e aplicar as migrações no banco.
-Vamos utilizar o banco de dados SQLite3 e acessar o projeto https://inloop.github.io/sqlite-viewer/ para visualizar a estrutura do banco de dados.
+Objetivo: Modelar o banco de dados, gerar e aplicar as migrações
 
 
 Criar a app de receitas
@@ -206,7 +212,7 @@ nome | String, tamanho máximo 100 caracteres| Nome da comida
 descricao| Texto livre | Descrição da comida
 foto_url | URL com no máximo 300 caracteres, pode ser nulo e pode ser vazio | URL da comida
 
-Após a codificação é necessário executar duas ações: gerar as migrações do banco de dados e aplicar as migrações no banco de dados.
+Após a codificação das propriedades é necessário executar duas ações: gerar as migrações do banco de dados e aplicar as migrações no banco de dados.
 
 Para gerar as migrações, execute
 
@@ -214,7 +220,7 @@ Para gerar as migrações, execute
 python manage.py makemigrations
 ```
 
-A saída deve ser algo semelhante a, indicando que a ação a ser executada é a criação de um novo Model:
+A saída deve ser algo indicando que a ação a ser executada é a criação de um novo Model:
 
 ```sh
 Migrations for 'comidas':
@@ -240,6 +246,8 @@ Running migrations:
 Podemos utilizar o aplicativo https://inloop.github.io/sqlite-viewer/ para visualizar a tabela.
 
 ##### ROUND 4: Criação de uma ViewSets comum e configuração das rotas da API
+
+Objetivo: Criar uma ViewSets simples e configurar as URLs da API.
 
 As ViewSets são as classes que lidam com as requisições HTTP e fazem a tratativa dos verbos GET, POST, PUT, DELETE, entre outros. As ViewSets também estabelecem permissões para cada tipo de recurso acessado.
 
@@ -287,11 +295,13 @@ Acessando a URL `http://localhost:8000/api/v1/comidas-paraenses/status/` a API d
 
 ##### ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
 
+Objetivo: Criar um Serializer e uma ViewSets e
+
 Serializers é um mecanismo capaz de transformar dados complexos, como objetos Django, em objetos mais simples como o JSON.
 
-O DRF fornece mecanismos que simplificam muito a criação de Serializers de modelos, facilitando a criação de um CRUD
+O DRF fornece mecanismos que simplificam muito a criação de Serializers de modelos, facilitando a criação de um CRUD.
 
-Crie o arquivo Atualizando o arquivo `comidas/serializers.py` e adicione o conteúdo:
+Crie o arquivo `comidas/serializers.py` e adicione o conteúdo:
 
 ```py
 from rest_framework.serializers import ModelSerializer
@@ -349,17 +359,132 @@ Perfeito, agora é só testar o CRUD com o Thunder Client!
 ##### ROUND 6: TDD
 
 Test Driven Developer: Desenvolvimento guiado por testes.
-No sexto round os participantes terão que construir casos de testes que devem garantir que as urls funcionem e o output de dados esteja correto.
 
+Objetivo: criar testes para validar o comportamento padrão da API
+
+Abra o arquivo `comidas/tests.py` e adicione o seguinte código:
+
+```py
+from django.test import TestCase
+
+from rest_framework.test import APIClient
+
+client = APIClient()
+
+class StatusViewSetTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_status_endpoint(self):
+        response = self.client.get('/api/v1/comidas-paraenses/status/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, {"message": "API funcionando!"})
+```
+
+Nesse exemplo o grupo de testes denominado `StatusViewSetTestCase` tem apenas um teste chamado `test_status_endpoint` que irá validar o endpoint /status.
+
+Para rodar os testes, execute o comando
+
+```sh
+python manage.py test
+```
+
+A saída no console será algo do tipo:
+
+```sh
+Found 1 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+....
+----------------------------------------------------------------------
+Ran 1 tests in 0.013s
+
+OK
+Destroying test database for alias 'default'...
+```
+
+Agora vamos criar os testes para a rota /comidas, adicione a classe no arquivo `comidas/tests.py`:
+
+```py
+class ComidasViewSetTestCase(TestCase):
+    def setUp(self):
+        self.client = APIClient()
+
+    def test_comidas_list(self):
+        response = self.client.get('/api/v1/comidas-paraenses/comidas/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, [])
+
+    def test_comidas_create(self):
+        data = {
+            "nome": "Tacacá",
+            "descricao": "Uma sopa típica da região Norte do Brasil.",
+        }
+        response = self.client.post('/api/v1/comidas-paraenses/comidas/', data, format='json')
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.data['nome'], data['nome'])
+
+    def test_comidas_retrieve(self):
+        data = {
+            "nome": "Açaí",
+            "descricao": "Fruta típica da Amazônia.",
+        }
+
+        create_response = self.client.post('/api/v1/comidas-paraenses/comidas/', data, format='json')
+        comida_id = create_response.data['id']
+
+        response = self.client.get(f'/api/v1/comidas-paraenses/comidas/{comida_id}/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['nome'], data['nome'])
+```
+
+Para rodar os testes, execute novamento o comando
+
+```sh
+python manage.py test
+```
+
+A saída no console será algo do tipo:
+
+```sh
+Found 4 test(s).
+Creating test database for alias 'default'...
+System check identified no issues (0 silenced).
+....
+----------------------------------------------------------------------
+Ran 4 tests in 0.013s
+
+OK
+Destroying test database for alias 'default'...
+```
+
+Os testes são fundamentais para garantir a qualidade do sistema ao logo do seu ciclo de desenvolvimento e de vida, o desenvolvimento guiado por testes é uma das práticas mais importantes no desenvolvimento de softwares, se não a mais.
+
+Manter os testes sempre atualizados é fundamental para manter a qualidade do sistemas e dar segurança aos programadores para evoluir o sistema.
 
 ##### ROUND 7: Django Admin
 
-No último round os participantes terão que configurar a interface visual do Django Admin para gerenciar as receitas, permitando assim um operação de CRUD na interface visual do Django Admin.
+Objetivo: Configurar a app Comida no painel admin do Django
+
+Primeiro é necessário criar um super usuário no Django
 
 ```sh
 python manage.py createsuperuser --username admin --email admin@admin.com
 ```
 
-Nos minutos finais da timebox será feita uma pequena retrospectiva do que foi desenvolvido e o que foi codificado será enviado para o repo do GruPy PA e ficará disponível para quem quiser e puder contribuir para melhorar!
+Depois o servidor de desenvolvimento precisa estar em execução:
 
-Você pode utilizar este guia para estudar e praticar por conta própria :)
+```sh
+python manage.py runserver
+```
+
+Agora é só acessar a URL http://localhost:8000/admin/ e logar com o usuário criado.
+
+Adicionar a app comida ao Admin no Django
+
+```py
+from django.contrib import admin
+from .models import Comida
+
+admin.site.register(Comida)
+```
