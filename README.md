@@ -31,7 +31,7 @@ Nos minutos finais da timebox será feita uma pequena retrospectiva do que foi d
 
 Você pode utilizar este guia para estudar e praticar por conta própria :)
 
-##### ROUND 1: Preparação do ambiente e criação do projeto
+#### ROUND 1: Preparação do ambiente e criação do projeto
 
 Objetivo: Criação e ativação do ambiente virtual, instalação do Django, iniciar um novo projeto Django e iniciar o servidor de desenvolvimento.
 
@@ -84,7 +84,7 @@ Agora é só acessar a URL http://localhost:8000/
 
 </center>
 
-##### ROUND 2: Django Rest Framework
+#### ROUND 2: Django Rest Framework
 
 Objetivo: Instalar o DRF e plugar a biblioteca no Django.
 
@@ -155,7 +155,7 @@ Acessando a URL  http://localhost:8000 novamente deve aparecer a tela do Django,
 </center>
 
 
-##### ROUND 3: Modelagem do banco de dados
+#### ROUND 3: Modelagem do banco de dados
 
 Objetivo: Modelar o banco de dados, gerar e aplicar as migrações
 
@@ -245,7 +245,7 @@ Running migrations:
 
 Podemos utilizar o aplicativo https://inloop.github.io/sqlite-viewer/ para visualizar a tabela.
 
-##### ROUND 4: Criação de uma ViewSets comum e configuração das rotas da API
+#### ROUND 4: Criação de uma ViewSets comum e configuração das rotas da API
 
 Objetivo: Criar uma ViewSets simples e configurar as URLs da API.
 
@@ -293,7 +293,7 @@ Acessando a URL `http://localhost:8000/api/v1/comidas-paraenses/status/` a API d
 }
 ```
 
-##### ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
+#### ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
 
 Objetivo: Criar um Serializer e uma ViewSets e
 
@@ -356,7 +356,7 @@ urlpatterns = [
 
 Perfeito, agora é só testar o CRUD com o Thunder Client!
 
-##### ROUND 6: TDD
+#### ROUND 6: TDD
 
 Test Driven Developer: Desenvolvimento guiado por testes.
 
@@ -462,7 +462,7 @@ Os testes são fundamentais para garantir a qualidade do sistema ao logo do seu 
 
 Manter os testes sempre atualizados é fundamental para manter a qualidade do sistemas e dar segurança aos programadores para evoluir o sistema.
 
-##### ROUND 7: Django Admin
+#### ROUND 7: Django Admin
 
 Objetivo: Configurar a app Comida no painel admin do Django
 
