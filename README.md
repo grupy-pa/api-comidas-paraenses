@@ -291,7 +291,7 @@ Serializers é um mecanismo capaz de transformar dados complexos, como objetos D
 
 O DRF fornece mecanismos que simplificam muito a criação de Serializers de modelos, facilitando a criação de um CRUD
 
-O Serializer
+Crie o arquivo Atualizando o arquivo `comidas/serializers.py` e adicione o conteúdo:
 
 ```py
 from rest_framework.serializers import ModelSerializer
@@ -324,7 +324,7 @@ class ComidasViewSet(ModelViewSet):
     queryset = Comida.objects.all()
 ```
 
-Atualizando o arquivo `urls.py`
+Depois que a ViewSets e o Serialier estiverem prontos, agora é só atualizar o arquivo `urls.py`
 
 ```py
 from django.contrib import admin
@@ -344,49 +344,21 @@ urlpatterns = [
 ]
 ```
 
-Agora é só testar com o Thunder Client!
+Perfeito, agora é só testar o CRUD com o Thunder Client!
 
-ROUND 6: TDD
+##### ROUND 6: TDD
 
 Test Driven Developer: Desenvolvimento guiado por testes.
 No sexto round os participantes terão que construir casos de testes que devem garantir que as urls funcionem e o output de dados esteja correto.
 
-As chamadas para a url `GET /api/v1/receitas-paraenses/` devem retornar o código HTTP 200 OK
 
-Testes de lista de comidas
-
-Na rota `GET /api/v1/receitas-paraenses/` a api deve retornar uma lista contendo os objetos em um formato específico:
-
-```json
-[
-  {
-    "nome": "Tacacá",
-    "descricao": "Tacacá é um prato típico da culinária amazônica, especialmente do estado do Pará, no Brasil. É conhecido por seu caldo quente feito com tucupi (um líquido amarelo extraído da mandioca brava), goma de tapioca, camarão seco e jambu, uma erva que causa uma sensação de dormência na boca.",
-    "url_imagem": "https://"
-  },
-  {
-    "nome": "Pato no tucupi",
-    "descricao": "Pato no tucupi é um prato típico da culinária amazônica, originário do estado do Pará, no Brasil. É preparado com carne de pato cozida em um caldo amarelo chamado tucupi, que é extraído da mandioca brava, e enriquecido com jambu, uma erva típica da região que causa uma leve dormência na boca. ",
-    "url_imagem": "https://"
-  }
-]
-```
-
-Teste pega comida
-
-A rota `GET /api/v1/receitas-paraenses/<id-comida>` deve retornar um objeto JSON no formato específico:
-
-```json
-{
-  "nome": "Tacacá",
-  "descricao": "Tacacá é um prato típico da culinária amazônica, especialmente do estado do Pará, no Brasil. É conhecido por seu caldo quente feito com tucupi (um líquido amarelo extraído da mandioca brava), goma de tapioca, camarão seco e jambu, uma erva que causa uma sensação de dormência na boca.",
-  "url_imagem": "https://"
-}
-```
-
-ROUND 7: Django Admin
+##### ROUND 7: Django Admin
 
 No último round os participantes terão que configurar a interface visual do Django Admin para gerenciar as receitas, permitando assim um operação de CRUD na interface visual do Django Admin.
+
+```sh
+python manage.py createsuperuser --username admin --email admin@admin.com
+```
 
 Nos minutos finais da timebox será feita uma pequena retrospectiva do que foi desenvolvido e o que foi codificado será enviado para o repo do GruPy PA e ficará disponível para quem quiser e puder contribuir para melhorar!
 
