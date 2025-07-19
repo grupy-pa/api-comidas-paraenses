@@ -19,6 +19,12 @@ Este repositório tem como objetivo propor um desafio para dojos de python com D
 - **round 5: ViewSets e Serializers com modelo e testes com Thunder Client**
   - No quarto round do dojo os participantes terão que construid uma ViewSets sem modelo e fazer a configuração das rotas com rest_framework.
 
+- **round 6: TDD**
+   - Nest round os participantes terão que codificar dois casos de testes simples para exemplificar a prática de TDD
+
+- **round 7: Django Admin**
+   - No último round os participantes irão configurar a app comidas para ser manipulada pela interface gráfica do Django Admin
+
 ##### ROUND 1: Preparação do ambiente e criação do projeto
 No primeiro round os participantes terão que criar o ambiente virtual para o projeto e o ambiente criado deverá ser ativado.
 
@@ -233,27 +239,26 @@ Running migrations:
 
 Podemos utilizar o aplicativo https://inloop.github.io/sqlite-viewer/ para visualizar a tabela.
 
-##### ROUND 4: Criação de uma ViewSets sem modelo
+##### ROUND 4: Criação de uma ViewSets comum e configuração das rotas da API
 
-No quarto round os participantes terão que construir a primeira viewsets que deve ser construída sem modelo para que as urls da API possam ser configuradas e testadas via browser.
+As ViewSets são as classes que lidam com as requisições HTTP e fazem a tratativa dos verbos GET, POST, PUT, DELETE, entre outros. As ViewSets também estabelecem permissões para cada tipo de recurso acessado.
 
-Acesse arquivo `comidas/views.py`
+Acesse arquivo `comidas/views.py` e vamos codificar a primeira ViewSets.
 
-Criação de uma ViewSets sem modelo
+Adicione o conteúdo ao arquivo:
 
 ```py
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import status
 
-class ViewSetSobre(ViewSet):
+class ViewSetStatus(ViewSet):
 
     def list(self, request):
-        serializer = SobreSerializer()
         return Response({ "message": "API funcionando!" }, status=status.HTTP_200_OK)
 ```
 
-Configurando a url da api
+Agora que a view de status foi codificada é necessário configurar as rotas da API, para isso edite o arquivo `urls.py` da seguinte forma:
 
 ```py
 from django.contrib import admin
@@ -264,20 +269,82 @@ from comidas.views import ViewSetSobre
 
 router = routers.DefaultRouter()
 
-router.register(r'sobre', ViewSetSobre, basename='sobre')
+router.register(r'status', ViewSetSobre, basename='status')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/receitas-paraenses/', include(router.urls)),
+    path('api/v1/comidas-paraenses/', include(router.urls)),
 ]
 ```
 
-A URL deve ser algo do tipo: `GET /api/v1/receitas-paraenses/sobre` e deve retornar o status de HTTP 200 OK
+Acessando a URL `http://localhost:8000/api/v1/comidas-paraenses/status/` a API deve retornar
+
+```JSON
+{
+    "message": "API funcionando!"
+}
+```
 
 ##### ROUND 5: Criação das ViewSets e Serializers com modelo e testando o CRUD automático do DRF com o Thunder Client
 
-Nesse round os participantes terão que construir o serializador de dados de modelos e também terão que codificar a ViewSets de modelo fornecendo ao DRF o poder de realizar o CRUD no banco de dados.
-Também terão que utilizar a extensão do visual code Thunder Client para testar o CRUD na API
+Serializers é um mecanismo capaz de transformar dados complexos, como objetos Django, em objetos mais simples como o JSON.
+
+O DRF fornece mecanismos que simplificam muito a criação de Serializers de modelos, facilitando a criação de um CRUD
+
+O Serializer
+
+```py
+from rest_framework.serializers import ModelSerializer
+
+from comidas.models import Comida
+
+class ComidaParaenseSerializer(ModelSerializer):
+    class Meta:
+        model = Comida
+        fields = '__all__'
+```
+
+Atualizando o arquivo `comidas/views.py`
+
+```py
+from rest_framework.viewsets import ViewSet, ModelViewSet
+from rest_framework.response import Response
+from rest_framework import status
+
+from comidas.serializers import ComidaParaenseSerializer
+from comidas.models import Comida
+
+class ViewSetStatus(ViewSet):
+
+    def list(self, request):
+        return Response({ "message": "API funcionando!" }, status=status.HTTP_200_OK)
+
+class ComidasViewSet(ModelViewSet):
+    serializer_class = ComidaParaenseSerializer
+    queryset = Comida.objects.all()
+```
+
+Atualizando o arquivo `urls.py`
+
+```py
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework import routers
+
+from comidas.views import ViewSetStatus, ComidasViewSet
+
+router = routers.DefaultRouter()
+
+router.register(r'status', ViewSetStatus, basename='status')
+router.register(r'comidas', ComidasViewSet, basename='comidas')
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/v1/comidas-paraenses/', include(router.urls)),
+]
+```
+
+Agora é só testar com o Thunder Client!
 
 ROUND 6: TDD
 
@@ -317,7 +384,7 @@ A rota `GET /api/v1/receitas-paraenses/<id-comida>` deve retornar um objeto JSON
 }
 ```
 
-ROUND 8: Django Admin
+ROUND 7: Django Admin
 
 No último round os participantes terão que configurar a interface visual do Django Admin para gerenciar as receitas, permitando assim um operação de CRUD na interface visual do Django Admin.
 
