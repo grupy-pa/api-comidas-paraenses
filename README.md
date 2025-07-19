@@ -273,11 +273,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 
-from comidas.views import ViewSetSobre
+from comidas.views import ViewSetStatus
 
 router = routers.DefaultRouter()
 
-router.register(r'status', ViewSetSobre, basename='status')
+router.register(r'status', ViewSetStatus, basename='status')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
